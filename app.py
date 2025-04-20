@@ -117,23 +117,6 @@ def register():
     return render_template('register.html', data=data, form=form)
 
 
-# @app.route('/process-register', methods=['POST'], endpoint='process_register')
-# def process_register():
-#     form = RegistrationForm()
-#     if form.validate_on_submit():
-#         email = form.email.data
-#         password = form.password.data
-#         hashed_password = generate_password_hash(password)
-        
-#         new_user = User(email=email, password=hashed_password)
-#         db.session.add(new_user)
-#         db.session.commit()
-
-#         flash('Account created successfully!', 'success')
-#         return redirect(url_for('login'))
-#     return redirect(url_for('register'))
-
-
 @app.route('/login', endpoint='login', methods=["POST", "GET"])
 def login():
     form = LoginForm()
