@@ -1,0 +1,138 @@
+{% extends "layout.html" %}
+
+
+{% block content %}
+<section class="hero-section text-center">
+    <div class="container">
+        <h1 class="display-4 fw-bold">{{ data['header_msg'] }}</h1>
+        <p class="lead my-4">{{ data['header_sub'] }}</p>
+        <a href="{{ url_for('shop') }}" class="btn btn-primary btn-lg me-2">Explore Games</a>
+        <a href="{{ url_for('register') }}" class="btn btn-secondary btn-lg">Register Now</a>
+    </div>
+</section>
+
+<section class="py-5 section-bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5 fw-bold">Trending Games</h2>
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100">
+                    <img src="https://via.placeholder.com/400x180/555555/FFFFFF?text=Game+Tournament+1" class="card-img-top" alt="Tournament 1">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Valorant Champions Tour</h5>
+                        <p class="card-text">Show your skills in the weekly Valorant challenge. Solo queue or bring your team!</p>
+                        <ul class="list-unstyled mt-3 mb-4">
+                            <li><i class="fas fa-calendar-alt me-2"></i> Starts: April 25, 2025</li>
+                            <li><i class="fas fa-users me-2"></i> 64 Slots</li>
+                            <li><i class="fas fa-trophy me-2"></i> $500 Prize Pool</li>
+                        </ul>
+                        <a href="#" class="btn btn-primary mt-auto">View Details</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100">
+                    <img src="https://via.placeholder.com/400x180/666666/FFFFFF?text=Game+Tournament+2" class="card-img-top" alt="Tournament 2">
+                     <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Apex Legends Arena</h5>
+                        <p class="card-text">Drop into the Apex Arena and fight for glory. Trios tournament.</p>
+                         <ul class="list-unstyled mt-3 mb-4">
+                            <li><i class="fas fa-calendar-alt me-2"></i> Starts: April 28, 2025</li>
+                            <li><i class="fas fa-users me-2"></i> 40 Teams</li>
+                            <li><i class="fas fa-trophy me-2"></i> In-Game Items + Swag</li>
+                        </ul>
+                        <a href="#" class="btn btn-primary mt-auto">View Details</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100">
+                    <img src="https://via.placeholder.com/400x180/777777/FFFFFF?text=Game+Tournament+3" class="card-img-top" alt="Tournament 3">
+                     <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Chess Masters Online</h5>
+                        <p class="card-text">Strategic minds wanted for our monthly online chess championship.</p>
+                         <ul class="list-unstyled mt-3 mb-4">
+                            <li><i class="fas fa-calendar-alt me-2"></i> Starts: May 1, 2025</li>
+                            <li><i class="fas fa-users me-2"></i> Open Entry</li>
+                            <li><i class="fas fa-trophy me-2"></i> Title + Bragging Rights</li>
+                        </ul>
+                        <a href="#" class="btn btn-primary mt-auto">View Details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+         <div class="text-center mt-5">
+            <a href="#" class="btn btn-outline-primary btn-lg">View All Games</a>
+        </div>
+    </div>
+</section>
+
+<section class="py-5 section-bg-dark">
+     <div class="container">
+         <h2 class="text-center mb-5 fw-bold">How It Works</h2>
+         <div class="row text-center g-4">
+             <div class="col-md-4">
+                 <div class="p-3">
+                    <i class="fas fa-user-plus fa-3x mb-3 text-primary"></i>
+                    <h4>1. Sign Up</h4>
+                    <p class="text-white-50">Create your free account in seconds and set up your profile.</p>
+                </div>
+             </div>
+              <div class="col-md-4">
+                <div class="p-3">
+                    <i class="fas fa-search fa-3x mb-3 text-primary"></i>
+                    <h4>2. Find Tournaments</h4>
+                    <p class="text-white-50">Browse upcoming tournaments for your favorite games.</p>
+                 </div>
+             </div>
+              <div class="col-md-4">
+                 <div class="p-3">
+                    <i class="fas fa-play-circle fa-3x mb-3 text-primary"></i>
+                    <h4>3. Compete & Win</h4>
+                    <p class="text-white-50">Join the matches, show your skills, and climb the leaderboard to win prizes.</p>
+                 </div>
+             </div>
+         </div>
+     </div>
+</section>
+
+<section class="py-5 section-bg-light">
+    <div class="container">
+         <h2 class="text-center mb-5 fw-bold">Games We Support</h2>
+         <div class="row g-4 justify-content-center align-items-center">
+             <div class="col-6 col-md-3 col-lg-2 text-center">
+                 <img src="https://via.placeholder.com/100x100/cccccc/000000?text=Game+Logo+1" alt="Game 1 Logo" class="img-fluid rounded-circle mb-2" style="max-width: 80px;">
+                 <p>Valorant</p>
+             </div>
+              <div class="col-6 col-md-3 col-lg-2 text-center">
+                 <img src="https://via.placeholder.com/100x100/cccccc/000000?text=Game+Logo+2" alt="Game 2 Logo" class="img-fluid rounded-circle mb-2" style="max-width: 80px;">
+                 <p>Apex Legends</p>
+             </div>
+              <div class="col-6 col-md-3 col-lg-2 text-center">
+                 <img src="https://via.placeholder.com/100x100/cccccc/000000?text=Game+Logo+3" alt="Game 3 Logo" class="img-fluid rounded-circle mb-2" style="max-width: 80px;">
+                 <p>CS 2</p>
+             </div>
+             <div class="col-6 col-md-3 col-lg-2 text-center">
+                 <img src="https://via.placeholder.com/100x100/cccccc/000000?text=Game+Logo+4" alt="Game 4 Logo" class="img-fluid rounded-circle mb-2" style="max-width: 80px;">
+                 <p>League of Legends</p>
+             </div>
+              <div class="col-6 col-md-3 col-lg-2 text-center">
+                 <img src="https://via.placeholder.com/100x100/cccccc/000000?text=Game+Logo+5" alt="Game 5 Logo" class="img-fluid rounded-circle mb-2" style="max-width: 80px;">
+                 <p>Chess</p>
+             </div>
+              <div class="col-6 col-md-3 col-lg-2 text-center">
+                 <img src="https://via.placeholder.com/100x100/cccccc/000000?text=More" alt="More Games" class="img-fluid rounded-circle mb-2" style="max-width: 80px;">
+                 <p>And More!</p>
+             </div>
+             </div>
+    </div>
+</section>
+
+<section class="py-5 section-bg-primary text-white">
+    <div class="container text-center">
+        <h2 class="display-5 fw-bold mb-3">Ready to Compete?</h2>
+        <p class="lead mb-4">Join thousands of players. Sign up today and start your journey!</p>
+        <a href="{{ url_for('register') }}" class="btn btn-light btn-lg">Sign Up Now</a>
+    </div>
+</section>
+{% endblock %}
