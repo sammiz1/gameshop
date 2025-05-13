@@ -24,6 +24,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from models import db, User, init_db
 from forms import RegistrationForm, LoginForm
 from site_constant import (APP_NAME, HEADER_MSG, HEADER_SUB)
+from game import Game
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey243#$@asFKR#+-9'
@@ -44,29 +45,46 @@ csrf = CSRFProtect(app)
 # for login
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(int(user_id))
+    return db.session.get(User, user_id) # User.query.get(int(user_id))
 
 
 @app.route('/', endpoint='home')
 def home():
+    discounted_games = Game.get(flag='discount', offset=0)
+    trending_games = Game.get(flag='trending', offset=0)
     data = {
         'app_name': APP_NAME,
         'header_msg': HEADER_MSG,
         'header_sub': HEADER_SUB,
-        'route_name': request.endpoint.capitalize()
+        'route_name': request.endpoint.capitalize(),
+        'discounted_games': discounted_games,
+        'trending_games': trending_games
     }
     return render_template('home.html', data=data)
 
 
 @app.route('/shop', endpoint='shop')
 def shop():
+    offset = request.args.get('offset')
+    search = request.args.get('search')
+
+    if search:
+        print(search)
+        offset = 0
+        games = Game.shop_games(search=True, term=search)
+    else:
+        if offset is not None: offset = int(offset)
+        else: offset = 0
+        games = Game.shop_games(limit=20, offset=offset)
+
     data = {
         'app_name': APP_NAME,
         'header_msg': HEADER_MSG,
         'header_sub': HEADER_SUB,
-        'route_name': request.endpoint.capitalize()
+        'route_name': request.endpoint.capitalize(),
+        'games': games
     }
-    return render_template('shop.html', data=data)
+    return render_template('shop.html', data=data, offset=offset)
 
 
 @app.route('/contact', endpoint='contact')
@@ -148,6 +166,23 @@ def logout():
     flash('Logged out successfully.', 'info')
     return redirect(url_for('login'))
 
+
+@app.route('/toggle-fav', endpoint='toggle_favgame', methods=['GET'])
+def toggle_favgame():
+    # current_user.email
+    if not current_user.is_authenticated:
+        flash('please login to perform this action', 'danger')
+        return redirect(url_for('home'))
+    else:
+        # print(request.args.get('game'))
+        data = Game.get_fav(request.args.get('game'), current_user.id)
+        if data:
+            Game.del_fav(data.get('game_id'), current_user.id)
+            return redirect(request.referrer)
+        else:
+            Game.insert_fav(request.args.get('game'), current_user.id)
+            return redirect(request.referrer)
+    pass
 
 
 if __name__ == '__main__':

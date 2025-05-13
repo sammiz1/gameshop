@@ -2,5 +2,63 @@
 
 
 {% block content %}
-<h1>shop</h1>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+    <div class="container">
+        {% for category, message in messages %}
+        <div class="my-3 alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </div>
+{% endif %}
+{% endwith %}
+
+<section class="py-5 section-bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5 fw-bold">All Games</h2>
+        <form method="GET" action="{{ url_for('shop') }}" class="my-4">
+            <div class="d-flex justify-content-center">
+                <div class="w-75">
+                    <input required class="form-control" type="text" placeholder="Search" name="search">
+                </div>
+                <button type="submit" class="ms-2 btn btn-primary">Search</button>
+            </div>
+        </form>
+        <div class="row g-4">
+            {% for game in data.games %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100">
+                    <img src="{{ game.get('img') }}" class="card-img-top" alt="Tournament 1">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">{{ game.get('name') }}</h5>
+                        <p class="card-text">{{ game.get('descp') | truncate(100, True)  }}</p>
+                        <ul class="list-unstyled mt-3 mb-4">
+                            <li><i class="fas fa-tag me-2"></i>Price: ${{ game.get('clean_price') }}</li>
+                            <li><i class="fas fa-money-bill me-2"></i>Discount: {{ game.get('perc_discount') }}%</li>
+                            <li><i class="fas fa-store me-2"></i>Store: {{ game.get('store') }}</li>
+                        </ul>
+                        {% if game.get('game_id') == game.get('row_id') and game.get('user_id') == current_user.id %}
+                        <a href="{{ url_for('toggle_favgame') }}?game={{game.get('row_id')}}" class="btn btn-danger mt-auto"><i class="fas fa-heart me-2"></i></a>
+                        {% else %}
+                        <a href="{{ url_for('toggle_favgame') }}?game={{game.get('row_id')}}" class="btn btn-success mt-auto"><i class="fas fa-heart me-2"></i></a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+         <!-- <div class="text-center mt-5">
+            <a href="#" class="btn btn-outline-primary btn-lg">View All Games</a>
+        </div> -->
+    </div>
+    <div class="my-3 w-100 mx-auto d-flex justify-content-center align-items-center">
+        <div class="">
+            <a href="{{ url_for('shop') }}?offset={% if offset <= 20 %}0{% else %}{{ offset - 20 }}{% endif %}" class="mx-1 btn btn-success">Back</a>
+            <a href="{{ url_for('shop') }}?offset={{ offset + 20 }}" class="mx-1 btn btn-success">Next</a>
+        </div>
+    </div>
+</section>
 {% endblock %}

@@ -4,14 +4,16 @@
 {% block content %}
 
 {% with messages = get_flashed_messages(with_categories=true) %}
-  {% if messages %}
-    {% for category, message in messages %}
-      <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-        {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-    {% endfor %}
-  {% endif %}
+{% if messages %}
+    <div class="container">
+        {% for category, message in messages %}
+        <div class="my-3 alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </div>
+{% endif %}
 {% endwith %}
 
 
@@ -27,53 +29,62 @@
 
 <section class="py-5 section-bg-light">
     <div class="container">
+        <h2 class="text-center mb-5 fw-bold">Top Discounted Games</h2>
+        <div class="row g-4">
+            {% for game in data.discounted_games %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100">
+                    <img src="{{ game.get('img') }}" class="card-img-top" alt="Tournament 1">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">{{ game.get('name') }}</h5>
+                        <p class="card-text">{{ game.get('descp') | truncate(100, True)  }}</p>
+                        <ul class="list-unstyled mt-3 mb-4">
+                            <li><i class="fas fa-tag me-2"></i>Price: ${{ game.get('clean_price') }}</li>
+                            <li><i class="fas fa-money-bill me-2"></i>Discount: {{ game.get('perc_discount') }}%</li>
+                            <li><i class="fas fa-store me-2"></i>Store: {{ game.get('store') }}</li>
+                        </ul>
+                        {% if game.get('game_id') == game.get('row_id') and game.get('user_id') == current_user.id %}
+                        <a href="{{ url_for('toggle_favgame') }}?game={{game.get('row_id')}}" class="btn btn-danger mt-auto"><i class="fas fa-heart me-2"></i></a>
+                        {% else %}
+                        <a href="{{ url_for('toggle_favgame') }}?game={{game.get('row_id')}}" class="btn btn-success mt-auto"><i class="fas fa-heart me-2"></i></a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+         <!-- <div class="text-center mt-5">
+            <a href="#" class="btn btn-outline-primary btn-lg">View All Games</a>
+        </div> -->
+    </div>
+</section>
+
+
+<section class="py-5 section-bg-light">
+    <div class="container">
         <h2 class="text-center mb-5 fw-bold">Trending Games</h2>
         <div class="row g-4">
+            {% for game in data.trending_games %}
             <div class="col-md-6 col-lg-4">
                 <div class="card h-100">
-                    <img src="https://via.placeholder.com/400x180/555555/FFFFFF?text=Game+Tournament+1" class="card-img-top" alt="Tournament 1">
+                    <img src="{{ game.get('img') }}" class="card-img-top" alt="Tournament 1">
                     <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">Valorant Champions Tour</h5>
-                        <p class="card-text">Show your skills in the weekly Valorant challenge. Solo queue or bring your team!</p>
+                        <h5 class="card-title">{{ game.get('name') }}</h5>
+                        <p class="card-text">{{ game.get('descp') | truncate(100, True)  }}</p>
                         <ul class="list-unstyled mt-3 mb-4">
-                            <li><i class="fas fa-calendar-alt me-2"></i> Starts: April 25, 2025</li>
-                            <li><i class="fas fa-users me-2"></i> 64 Slots</li>
-                            <li><i class="fas fa-trophy me-2"></i> $500 Prize Pool</li>
+                            <li><i class="fas fa-tag me-2"></i>Price: ${{ game.get('clean_price') }}</li>
+                            <li><i class="fas fa-money-bill me-2"></i>Discount: {{ game.get('perc_discount') }}%</li>
+                            <li><i class="fas fa-store me-2"></i>Store: {{ game.get('store') }}</li>
                         </ul>
-                        <a href="#" class="btn btn-primary mt-auto">View Details</a>
+                        {% if game.get('game_id') == game.get('row_id') and game.get('user_id') == current_user.id %}
+                        <a href="{{ url_for('toggle_favgame') }}?game={{game.get('row_id')}}" class="btn btn-danger mt-auto"><i class="fas fa-heart me-2"></i></a>
+                        {% else %}
+                        <a href="{{ url_for('toggle_favgame') }}?game={{game.get('row_id')}}" class="btn btn-success mt-auto"><i class="fas fa-heart me-2"></i></a>
+                        {% endif %}
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 col-lg-4">
-                <div class="card h-100">
-                    <img src="https://via.placeholder.com/400x180/666666/FFFFFF?text=Game+Tournament+2" class="card-img-top" alt="Tournament 2">
-                     <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">Apex Legends Arena</h5>
-                        <p class="card-text">Drop into the Apex Arena and fight for glory. Trios tournament.</p>
-                         <ul class="list-unstyled mt-3 mb-4">
-                            <li><i class="fas fa-calendar-alt me-2"></i> Starts: April 28, 2025</li>
-                            <li><i class="fas fa-users me-2"></i> 40 Teams</li>
-                            <li><i class="fas fa-trophy me-2"></i> In-Game Items + Swag</li>
-                        </ul>
-                        <a href="#" class="btn btn-primary mt-auto">View Details</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-4">
-                <div class="card h-100">
-                    <img src="https://via.placeholder.com/400x180/777777/FFFFFF?text=Game+Tournament+3" class="card-img-top" alt="Tournament 3">
-                     <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">Chess Masters Online</h5>
-                        <p class="card-text">Strategic minds wanted for our monthly online chess championship.</p>
-                         <ul class="list-unstyled mt-3 mb-4">
-                            <li><i class="fas fa-calendar-alt me-2"></i> Starts: May 1, 2025</li>
-                            <li><i class="fas fa-users me-2"></i> Open Entry</li>
-                            <li><i class="fas fa-trophy me-2"></i> Title + Bragging Rights</li>
-                        </ul>
-                        <a href="#" class="btn btn-primary mt-auto">View Details</a>
-                    </div>
-                </div>
-            </div>
+            {% endfor %}
         </div>
          <div class="text-center mt-5">
             <a href="#" class="btn btn-outline-primary btn-lg">View All Games</a>
@@ -81,36 +92,9 @@
     </div>
 </section>
 
-<section class="py-5 section-bg-dark">
-     <div class="container">
-         <h2 class="text-center mb-5 fw-bold">How It Works</h2>
-         <div class="row text-center g-4">
-             <div class="col-md-4">
-                 <div class="p-3">
-                    <i class="fas fa-user-plus fa-3x mb-3 text-primary"></i>
-                    <h4>1. Sign Up</h4>
-                    <p class="text-white-50">Create your free account in seconds and set up your profile.</p>
-                </div>
-             </div>
-              <div class="col-md-4">
-                <div class="p-3">
-                    <i class="fas fa-search fa-3x mb-3 text-primary"></i>
-                    <h4>2. Find Tournaments</h4>
-                    <p class="text-white-50">Browse upcoming tournaments for your favorite games.</p>
-                 </div>
-             </div>
-              <div class="col-md-4">
-                 <div class="p-3">
-                    <i class="fas fa-play-circle fa-3x mb-3 text-primary"></i>
-                    <h4>3. Compete & Win</h4>
-                    <p class="text-white-50">Join the matches, show your skills, and climb the leaderboard to win prizes.</p>
-                 </div>
-             </div>
-         </div>
-     </div>
-</section>
 
-<section class="py-5 section-bg-light">
+
+<!-- <section class="py-5 section-bg-light">
     <div class="container">
          <h2 class="text-center mb-5 fw-bold">Games We Support</h2>
          <div class="row g-4 justify-content-center align-items-center">
@@ -140,7 +124,7 @@
              </div>
              </div>
     </div>
-</section>
+</section> -->
 
 <section class="py-5 section-bg-primary text-white">
     <div class="container text-center">
